@@ -1,14 +1,47 @@
-<h3>angular</h3>
-<hr>
-<app-server></app-server>
+<app-header></app-header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>I'm working</h2>
+      <app-recipes></app-recipes>
+      <app-shopping-list></app-shopping-list>
+    </div>
+  </div>
+</div>
 
-<div highlight>highlight</div>
-<div *unless="false">unless</div>
+<app-children-content>
+  <p>render children content same as react</p>
+  <p #contentParagraph>{{title}}</p>
+</app-children-content>
 
-@if (true) {
-  <p>if condition syntax in angular 17</p>
-}
+<!-- <p highlight [defaultColor]="'yellow'" [highlightColor]="'red'">Hostlistener</p> -->
+<p [highlight]="'black'" [defaultColor]="'yellow'" [highlightColor]="'red'">Hostlistener</p>
 
-<ng-template [unless]="false">
-  <div>unless in ng-template</div>
-</ng-template>
+<p>Dropdown</p>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn group" appDropdown>
+      <button class="btn btn-primary dropdown-toggle">
+        Manage Recipe <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">To Shopping List</a></li>
+        <li><a href="#">Edit Recipe</a></li>
+        <li><a href="#">Delete Recipe</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <ul>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/">Home</a></li>
+      <li routerLinkActive="active"><a [routerLink]="['/servers']">Servers</a></li>
+      <li routerLinkActive="active"><a [routerLink]="'/users'">Users</a></li>
+    </ul>
+  </div>
+  <div class="row">
+    <router-outlet></router-outlet>
+  </div>
+</div>

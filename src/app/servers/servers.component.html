@@ -1,0 +1,5 @@
+<p>servers works!</p>
+<button (click)="reload()">Reload Server</button>
+<hr>
+<a [routerLink]="['/servers', 5, 'edit']" [queryParams]="{allowEdit: '1'}" fragment="loading">Edit Server</a>
+<router-outlet></router-outlet>
