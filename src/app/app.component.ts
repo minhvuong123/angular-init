@@ -1,6 +1,7 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, OnInit } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoggingService } from './services/logging.service';
 import { AccountsService } from './services/accounts.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -28,5 +29,38 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     console.log("ngAfterContentInit - ContentChild: ", this.paragraph)
+  }
+
+  // onSubmit(form: NgForm) {
+  //   console.log("submitted", form)
+  // }
+  defaultQuestion = "pet";
+  answer="";
+  genders=['male', 'female']
+  @ViewChild("form") signupForm: NgForm;
+  onSubmit(form: NgForm) {
+    console.log("submitted", form)
+  }
+
+  sugguestUsername() {
+    // this.signupForm.setValue({
+    //   userData: {
+    //     username: "kiwi sugguest",
+    //     email: ''
+    //   },
+    //   secrect: "pet",
+    //   questionAnswer: "",
+    //   gender:"male"
+    // })
+    this.signupForm.form.patchValue({
+      userData: {
+        username: "kiwi sugguest",
+        email: ''
+      },
+      secrect: "pet",
+      questionAnswer: "",
+      gender:"male"
+    })
+    this.signupForm.reset();
   }
 }
