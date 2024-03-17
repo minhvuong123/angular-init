@@ -1,7 +1,8 @@
 import { AfterContentInit, Component, ContentChild, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoggingService } from './services/logging.service';
 import { AccountsService } from './services/accounts.service';
-import { NgForm } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +18,6 @@ export class AppComponent implements OnInit, AfterContentInit {
     accountsService.updateStatus.subscribe((status: string) => {
       // alert("New Status:" + status)
     })
-  }
-
-  ngOnInit(): void {
-    console.log("ngOnInit - ContentChild: ", this.paragraph)
-
-    // const logService = new LoggingService();
-    // this.loggingService.logStatusChange("asdad")
-    this.accountsService.createAccount();
   }
 
   ngAfterContentInit(): void {
@@ -62,5 +55,68 @@ export class AppComponent implements OnInit, AfterContentInit {
       gender:"male"
     })
     this.signupForm.reset();
+  }
+
+  signupFormGroup: FormGroup;
+  
+  ngOnInit(): void {
+    console.log("ngOnInit - ContentChild: ", this.paragraph)
+
+    // const logService = new LoggingService();
+    // this.loggingService.logStatusChange("asdad")
+    this.accountsService.createAccount();
+
+    this.signupFormGroup = new FormGroup({
+      username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+      email: new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails),
+      gender: new FormControl('male'),
+      hobbies: new FormArray([]),
+      status: new FormControl('critical')
+    });
+
+    // this.signupFormGroup.valueChanges.subscribe((value) => {
+    //   console.log(value)
+    // })
+
+    // this.signupFormGroup.statusChanges.subscribe((status) => {
+    //   console.log(status)
+    // })
+  }
+
+  onSubmitForm(): void {
+    console.log(this.signupFormGroup)
+  }
+
+  getControls(name: string) {
+    const controls = (<FormArray>this.signupFormGroup.get(name)).controls;
+    return controls;
+  }
+
+  onAddHobby(): void {
+    const control = new FormControl(null, Validators.required);
+    (<FormArray>this.signupFormGroup.get('hobbies')).push(control)
+  }
+
+  forbiddenUsernames = ['Chris', 'Anna']; // validators
+  forbiddenNames(control: FormControl): { [s: string]: boolean } {
+    if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
+      return { 'nameIsForbidden': true }
+    }
+
+    return null;
+  }
+
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === 'test@test.com') {
+          resolve({ 'emailIsForbidden': true })
+        } else {
+          resolve(null)
+        }
+      }, 1500)
+    });
+
+    return promise;
   }
 }

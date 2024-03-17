@@ -86,3 +86,71 @@
     </div>
   </div>
 </div>
+
+
+<h3>Forms Reactive</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form [formGroup]="signupFormGroup" (ngSubmit)="onSubmitForm()">
+        <!-- <div formGroupName="userData"></div> -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" class="form-control" formControlName="username">
+          <span 
+            class="help-block" 
+            *ngIf="!signupFormGroup.get('username').valid && signupFormGroup.get('username').touched">
+            <span 
+              class="help-block" 
+              *ngIf="signupFormGroup.get('username').errors['nameIsForbidden']">
+                This name is invalid
+            </span>
+            <span 
+              class="help-block" 
+              *ngIf="signupFormGroup.get('username').errors['required']">
+                This field required
+            </span>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" class="form-control" formControlName="email">
+          <span 
+            class="help-block" 
+            *ngIf="!signupFormGroup.get('email').valid && signupFormGroup.get('email').touched">
+            Please input the email!
+          </span>
+        </div>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input type="radio" name="gender" [value]="gender" formControlName="gender">
+            {{gender}}
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" class="form-control" name="status" formControlName="status"> 
+            <option value="stable">Stable</option>
+            <option value="critical">Critical</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+        <div formArrayName="hobbies">
+          <h4>Your Hobbies</h4>
+          <button (click)="onAddHobby()" class="btn btn-default" type="button">
+            Add Hobby
+          </button>
+          <div class="form-group" *ngFor="let hobbyControl of getControls('hobbies'); let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+        </div>
+        <span 
+            class="help-block" 
+            *ngIf="!signupFormGroup.valid && signupFormGroup.touched">
+            Please enter valid data!
+          </span>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
