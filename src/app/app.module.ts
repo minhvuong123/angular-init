@@ -31,6 +31,9 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
 import { ServerResolver } from './servers/server/server-resolver.service';
+import { ShortenPipe } from './shorten.pipe';
+import { CommonModule } from '@angular/common';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { ServerResolver } from './servers/server/server-resolver.service';
     UserComponent,
     PageNotFoundComponent,
     ErrorPageComponent,
-    ServerComponent
+    ServerComponent,
+    ShortenPipe,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
