@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HighlightDirective } from './directive-custom/highlight.directive';
 import { UnlessDirective } from './directive-custom/unless.directive';
 import { DirectiveCustomComponent } from './directive-custom/directive-custom.component';
@@ -34,6 +34,8 @@ import { ServerResolver } from './servers/server/server-resolver.service';
 import { ShortenPipe } from './shorten.pipe';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from './filter.pipe';
+import { AuthInterceptorService } from './auth-interceptor';
+import { LogginInterceptorService } from './logging-interceptor';
 
 @NgModule({
   declarations: [
@@ -74,7 +76,17 @@ import { FilterPipe } from './filter.pipe';
     AuthGuard, 
     CanDeactivateGuard, 
     ServersService, 
-    ServerResolver
+    ServerResolver,
+    {
+      provide: HTTP_INTERCEPTORS, // run first
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, // run second
+      useClass: LogginInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
