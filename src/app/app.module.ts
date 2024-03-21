@@ -32,10 +32,11 @@ import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
 import { ServerResolver } from './servers/server/server-resolver.service';
 import { ShortenPipe } from './shorten.pipe';
-import { CommonModule } from '@angular/common';
 import { FilterPipe } from './filter.pipe';
 import { AuthInterceptorService } from './auth-interceptor';
 import { LogginInterceptorService } from './logging-interceptor';
+import { AuthComponent } from './auth/auth.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import { LogginInterceptorService } from './logging-interceptor';
     ErrorPageComponent,
     ServerComponent,
     ShortenPipe,
-    FilterPipe
+    FilterPipe,
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

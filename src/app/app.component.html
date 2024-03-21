@@ -37,8 +37,10 @@
   <div class="row">
     <ul>
       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/">Home</a></li>
-      <li routerLinkActive="active"><a [routerLink]="['/servers']">Servers</a></li>
-      <li routerLinkActive="active"><a [routerLink]="'/users'">Users</a></li>
+      <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/servers']">Servers</a></li>
+      <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="'/users'">Users</a></li>
+      <li routerLinkActive="active" *ngIf="!isAuthenticated"><a [routerLink]="'/auth'">Authenticate</a></li>
+      <li *ngIf="isAuthenticated"><span (click)="logout()">Log out</span></li>
     </ul>
   </div>
   <div class="row">
@@ -46,7 +48,7 @@
   </div>
 </div>
 
-<h3>Forms Template Driven</h3>
+<!-- <h3>Forms Template Driven</h3>
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
@@ -85,15 +87,14 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 
-<h3>Forms Reactive</h3>
+<!-- <h3>Forms Reactive</h3>
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <form [formGroup]="signupFormGroup" (ngSubmit)="onSubmitForm()">
-        <!-- <div formGroupName="userData"></div> -->
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" class="form-control" formControlName="username">
@@ -153,9 +154,9 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
-<h3>Pipe</h3>
+<!-- <h3>Pipe</h3>
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-1">
@@ -174,4 +175,4 @@
       </ul>
     </div>
   </div>
-</div>
+</div> -->

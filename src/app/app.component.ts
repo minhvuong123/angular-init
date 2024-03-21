@@ -2,7 +2,9 @@ import { AfterContentInit, Component, ContentChild, ElementRef, OnInit, ViewChil
 import { LoggingService } from './services/logging.service';
 import { AccountsService } from './services/accounts.service';
 import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { observable, Observable, Subscription } from 'rxjs';
+import { AuthService } from './auth/auth.service';
+import { exhaustMap, map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,11 @@ export class AppComponent implements OnInit, AfterContentInit {
   title = 'angular-first-app';
   @ContentChild('contentParagraph') paragraph: ElementRef;
 
-  constructor(private loggingService: LoggingService, private accountsService: AccountsService) {
+  constructor(
+    private loggingService: LoggingService, 
+    private accountsService: AccountsService,
+    private authService: AuthService
+  ) {
     accountsService.updateStatus.subscribe((status: string) => {
       // alert("New Status:" + status)
     })
@@ -59,6 +65,8 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   signupFormGroup: FormGroup;
   
+  private userSub: Subscription;
+  isAuthenticated = false;
   ngOnInit(): void {
     console.log("ngOnInit - ContentChild: ", this.paragraph)
 
@@ -81,6 +89,18 @@ export class AppComponent implements OnInit, AfterContentInit {
     // this.signupFormGroup.statusChanges.subscribe((status) => {
     //   console.log(status)
     // })
+
+    this.userSub = this.authService.user.subscribe((user) => {
+      this.isAuthenticated = !!user;
+    })
+
+    // return this.authService.user.pipe(take(1), exhaustMap(user => {
+    //   return new Observable<any>((observable) => {
+    //     observable.next(user);
+    //   })
+    // }), map(user => {
+    //   return user;
+    // }))
   }
 
   onSubmitForm(): void {
@@ -162,4 +182,8 @@ export class AppComponent implements OnInit, AfterContentInit {
       resolve("stable")
     }, 1500)
   })
+
+  logout() {
+    this.authService.logout();
+  }
 }

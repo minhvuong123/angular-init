@@ -11,11 +11,13 @@ import { CanDeactivateGuard } from "./edit-server/can-deactivate-guard.service";
 import { ErrorPageComponent } from "./error-page/error-page.component";
 import { ServerComponent } from "./servers/server/server.component";
 import { ServerResolver } from "./servers/server/server-resolver.service";
+import { AuthComponent } from "./auth/auth.component";
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'users', component: UsersComponent},
   { path: 'users/:id', component: UserComponent},
+  { path: 'auth', component: AuthComponent},
   { 
     path: 'servers', 
     // canActivate: [AuthGuard], 
