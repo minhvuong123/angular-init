@@ -37,6 +37,9 @@ import { AuthInterceptorService } from './auth-interceptor';
 import { LogginInterceptorService } from './logging-interceptor';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { AlertComponent } from './alert/alert.component';
+import { PlaceholderDirective } from './alert/placeholder/placeholder.directive';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [
@@ -63,14 +66,17 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     ShortenPipe,
     FilterPipe,
     AuthComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    AlertComponent,
+    PlaceholderDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     AccountsService, 
@@ -91,6 +97,9 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  // entryComponents: [
+  //   AlertComponent
+  // ]
 })
 export class AppModule { }

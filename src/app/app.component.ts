@@ -1,10 +1,12 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ComponentFactoryResolver, ContentChild, ElementRef, OnInit, viewChild, ViewChild } from '@angular/core';
 import { LoggingService } from './services/logging.service';
 import { AccountsService } from './services/accounts.service';
 import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { observable, Observable, Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { exhaustMap, map, take } from 'rxjs/operators';
+import { AlertComponent } from './alert/alert.component';
+import { PlaceholderDirective } from './alert/placeholder/placeholder.directive';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +14,15 @@ import { exhaustMap, map, take } from 'rxjs/operators';
   styleUrl: './app.component.css',
   providers: [LoggingService]
 })
-export class AppComponent implements OnInit, AfterContentInit {
+export class AppComponent implements OnInit, AfterContentInit, AfterViewInit {
   title = 'angular-first-app';
   @ContentChild('contentParagraph') paragraph: ElementRef;
 
   constructor(
     private loggingService: LoggingService, 
     private accountsService: AccountsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {
     accountsService.updateStatus.subscribe((status: string) => {
       // alert("New Status:" + status)
@@ -185,5 +188,33 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  error: string = null;
+  onHandleError() {
+    this.error = null;
+  }
+
+  closeSub: Subscription;
+  @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective; // appPlaceholder
+  private showErrorAlert() {
+    // const alertCmp = new AlertComponent(); // wrong way
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    if (this.alertHost) {
+      const hostViewContainerRef = this.alertHost.viewContainerRef;
+      hostViewContainerRef.clear();
+      
+      const componentRef = hostViewContainerRef.createComponent(alertCmpFactory)
+      componentRef.instance.message = "";
+      this.closeSub = componentRef.instance.close.subscribe(() => {
+        this.closeSub.unsubscribe();
+        hostViewContainerRef.clear();
+      })
+    }
+    
+  }
+
+  ngAfterViewInit(): void {
+    this.showErrorAlert();
   }
 }
