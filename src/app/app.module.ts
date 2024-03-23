@@ -16,30 +16,22 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { ChildrenContentComponent } from './children-content/children-content.component';
 import { DropdownDirective } from './directive-custom/dropdown.directive';
-import { AccountsService } from './services/accounts.service';
-import { LoggingService } from './services/logging.service';
 import { HomeComponent } from './home/home.component';
 import { ServersComponent } from './servers/servers.component';
 import { UsersComponent } from './users/users.component';
 import { UserComponent } from './user/user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './auth.service';
-import { AuthGuard } from './auth-guard.service';
-import { CanDeactivateGuard } from './edit-server/can-deactivate-guard.service';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ServerComponent } from './servers/server/server.component';
-import { ServersService } from './servers/servers.service';
-import { ServerResolver } from './servers/server/server-resolver.service';
 import { ShortenPipe } from './shorten.pipe';
 import { FilterPipe } from './filter.pipe';
-import { AuthInterceptorService } from './auth-interceptor';
-import { LogginInterceptorService } from './logging-interceptor';
-import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { AlertComponent } from './alert/alert.component';
 import { PlaceholderDirective } from './alert/placeholder/placeholder.directive';
 import { SharedModule } from './shared.module';
+import { CoreModule } from './core.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -65,37 +57,37 @@ import { SharedModule } from './shared.module';
     ServerComponent,
     ShortenPipe,
     FilterPipe,
-    AuthComponent,
     LoadingSpinnerComponent,
     AlertComponent,
     PlaceholderDirective
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    CoreModule,
+    // AuthModule
   ],
   providers: [
-    AccountsService, 
-    LoggingService, 
-    AuthService, 
-    AuthGuard, 
-    CanDeactivateGuard, 
-    ServersService, 
-    ServerResolver,
-    {
-      provide: HTTP_INTERCEPTORS, // run first
-      useClass: AuthInterceptorService,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS, // run second
-      useClass: LogginInterceptorService,
-      multi: true
-    }
+    // AccountsService, 
+    // LoggingService, 
+    // AuthService, 
+    // AuthGuard, 
+    // CanDeactivateGuard, 
+    // ServersService, 
+    // ServerResolver,
+    // {
+    //   provide: HTTP_INTERCEPTORS, // run first
+    //   useClass: AuthInterceptorService,
+    //   multi: true
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS, // run second
+    //   useClass: LogginInterceptorService,
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent],
   // entryComponents: [

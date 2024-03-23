@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from "./home/home.component";
 import { UsersComponent } from "./users/users.component";
 import { ServersComponent } from "./servers/servers.component";
@@ -17,7 +17,8 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'users', component: UsersComponent},
   { path: 'users/:id', component: UserComponent},
-  { path: 'auth', component: AuthComponent},
+  // { path: 'auth', component: AuthComponent},
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
   { 
     path: 'servers', 
     // canActivate: [AuthGuard], 
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
+    // RouterModule.forRoot(appRoutes, { useHash: true, preloadingStrategy: PreloadAllModules }),
     RouterModule.forRoot(appRoutes, { useHash: true }),
   ],
   exports: [RouterModule]

@@ -13,7 +13,9 @@ export class AuthComponent {
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    console.log("auth module")
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
